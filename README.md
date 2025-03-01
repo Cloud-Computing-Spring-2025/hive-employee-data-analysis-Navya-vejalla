@@ -77,7 +77,8 @@ FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
 ```
 ```sql
-SET hive.exec.dynamic.partition.mode=nonstrict;
+SET hive.exec.dynamic.partition = true;
+SET hive.exec.dynamic.partition.mode = nonstrict;
 ```
 
 ### Insert Data from `temp_employees` into `employees`
@@ -85,6 +86,16 @@ SET hive.exec.dynamic.partition.mode=nonstrict;
 INSERT INTO TABLE employees PARTITION(department)
 SELECT emp_id, name, age, job_role, salary, project, join_date, department
 FROM temp_employees;
+```
+
+### Manually Add Partitions Based on Department Values
+```sql
+ALTER TABLE employees ADD PARTITION (department='Sales');
+ALTER TABLE employees ADD PARTITION (department='Engineering');
+ALTER TABLE employees ADD PARTITION (department='HR');
+ALTER TABLE employees ADD PARTITION (department='Finance');
+ALTER TABLE employees ADD PARTITION (department='Marketing');
+ALTER TABLE employees ADD PARTITION (department='Operations');
 ```
 
 ## Step 4 : Running Queries and Exporting Results
@@ -190,6 +201,4 @@ FROM (
 ) ranked
 WHERE rnk <= 3;
 ```
-
-
 
